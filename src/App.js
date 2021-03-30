@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import AddDiary from "./components/AddDiary";
+import Diary from "./components/Diary";
+import NavBar from "./components/NavBar";
+import { initialDiary } from "./seeder/initData";
 
 function App() {
+  const [initData, setInitData] = useState(
+    initialDiary
+  );
+
+  //this function deletes any entry that matches the return date
+  const del = (date) => {
+    setInitData(
+      initData.filter((d) => d.date !== date)
+    );
+  };
+  //this function loads the new data entered before the old/initial data
+  const newDiary = (newdata) => {
+    setInitData([newdata, ...initData]);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar />
+      <AddDiary newDiary={newDiary} />
+      <Diary initData={initData} del={del} />
+    </>
   );
 }
 
